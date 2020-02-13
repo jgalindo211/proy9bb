@@ -1,0 +1,10 @@
+<?xml version = '1.0' encoding = 'windows-1252'?>
+                    
+<wls:weblogic-application xmlns:j2ee="http://java.sun.com/xml/ns/j2ee" xmlns:wls="http://www.bea.com/ns/weblogic/90"
+xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://www.bea.com/ns/weblogic/90 http://www.bea.com/ns/weblogic/90/weblogic-application.xsd ">                      
+<wls:prefer-application-packages>
+    <wls:package-name>org.apache.xerces.parsers.*</wls:package-name>
+    <wls:package-name>org.apache.xerces.xni.parser.*</wls:package-name>
+</wls:prefer-application-packages>                      
+</wls:weblogic-application>

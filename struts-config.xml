@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC 
+"-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" 
+"http://jakarta.apache.org/struts/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+	<form-beans>
+		<form-bean
+			name="SolicitudReqForm"
+			type="bandesal.gob.sv.cif.anexos.form.SolicitudReqForm"/>
+		<form-bean
+			name="ReqForm"
+			type="bandesal.gob.sv.cif.anexos.form.ReqForm"/>
+		<form-bean
+			name="ReqModForm"
+			type="bandesal.gob.sv.cif.anexos.form.ReqModForm"/>
+		<form-bean
+			name="SolicitudReqAnexosForm"
+			type="bandesal.gob.sv.cif.anexos.form.SolicitudReqAnexosForm"/>
+		<form-bean
+			name="SolicitudReqCierreForm"
+			type="bandesal.gob.sv.cif.anexos.form.SolicitudReqCierreForm"/>
+		<form-bean
+			name="SolicitudReqAprobacionRechazoForm"
+			type="bandesal.gob.sv.cif.anexos.form.SolicitudReqAprobacionRechazoForm"/>
+		<form-bean
+			name="SolicitudReqReenvioForm"
+			type="bandesal.gob.sv.cif.anexos.form.SolicitudReqReenvioForm"/>
+		<form-bean
+			name="SolicitudReqModificaForm"
+			type="bandesal.gob.sv.cif.anexos.form.SolicitudReqModificaForm"/>
+		<form-bean
+			name="SolicitudReqModificaAnexosForm"
+			type="bandesal.gob.sv.cif.anexos.form.SolicitudReqModificaAnexosForm"/>
+        </form-beans>
+
+	<action-mappings>
+                <!--seccion dedicada al index utilizando implementacion de Token para evitar cross site scripting -->
+		<action input="/index.jsp"
+			path="/solReqTAction"
+                        scope="session"
+			type="bandesal.gob.sv.cif.anexos.action.SolicitudReqTokenAction">
+			<forward name="successSol" path="/solicitudReq.jsp"/>
+                </action>
+		<action input="/index.jsp"
+			path="/solReenTAction"
+                        scope="session"
+			type="bandesal.gob.sv.cif.anexos.action.SolicitudReqReenvioTokenAction">
+			<forward name="successReeSol" path="/solicitudReenvioReq.jsp"/>
+                </action>
+		<action input="/index.jsp"
+			path="/solCieTAction"
+                        scope="session"
+			type="bandesal.gob.sv.cif.anexos.action.SolicitudReqCierreTokenAction">
+			<forward name="successCieSol" path="/solicitudCierreReq.jsp"/>
+                </action>
+		<action input="/index.jsp"
+			path="/solAudTAction"
+                        scope="session"
+			type="bandesal.gob.sv.cif.anexos.action.SolicitudReqAprobacionRechazoTokenAction">
+			<forward name="successAudSol" path="/solicitudAprobacionRechazoReq.jsp"/>
+                </action>
+                <!--Fin seccion dedicada a la seccion de Token -->
+                
+		<action input="/solicitudReq.jsp"
+			name="ReqForm"
+			path="/reqAction"
+                        scope="session"
+			type="bandesal.gob.sv.cif.anexos.action.ReqAction">
+			<forward name="successReq" path="/solicitudReq.jsp"/>
+                </action>
+		<action input="/solicitudModificaReq.jsp"
+			name="ReqModForm"
+			path="/reqModAction"
+                        scope="session"
+			type="bandesal.gob.sv.cif.anexos.action.ReqActionMod">
+			<forward name="successModReq" path="/solicitudModificaReq.jsp"/>
+                </action>
+		<action input="/solicitudReq.jsp"
+			name="SolicitudReqForm"
+			path="/solicitudReqAction"
+                        scope="session"
+			type="bandesal.gob.sv.cif.anexos.action.SolicitudReqAction">
+			<forward name="success" path="/solicitudReq.jsp"/>
+                </action>
+
+		<action input="/solicitudReq.jsp"
+			name="SolicitudReqAnexosForm"
+			path="/solicitudReqAnexosAction"
+                        scope="session"
+			type="bandesal.gob.sv.cif.anexos.action.SolicitudReqAnexosAction">
+			<forward name="success" path="/solicitudReq.jsp"/>
+                </action>
+		<action input="/solicitudCierreReq.jsp"
+			name="SolicitudReqCierreForm"
+			path="/solicitudReqCierreAction"
+                        scope="session"
+			type="bandesal.gob.sv.cif.anexos.action.SolicitudReqCierreAction">
+			<forward name="successCierre" path="/solicitudCierreReq.jsp"/>
+                </action>
+		<action input="/solicitudAprobacionRechazoReq.jsp"
+			name="SolicitudReqAprobacionRechazoForm"
+			path="/solicitudReqAprobacionRechazoAction"
+                        scope="session"
+			type="bandesal.gob.sv.cif.anexos.action.SolicitudReqAprobacionRechazoAction">
+			<forward name="successAprobacion" path="/solicitudAprobacionRechazoReq.jsp"/>
+                </action>
+		<action input="/solicitudReenvioReq.jsp"
+			name="SolicitudReqReenvioForm"
+			path="/solicitudReqReenvioAction"
+                        scope="session"
+			type="bandesal.gob.sv.cif.anexos.action.SolicitudReqReenvioAction">
+			<forward name="successReenvio" path="/solicitudModificaReq.jsp"/>
+                </action>
+		<action input="/solicitudModificaReq.jsp"
+			name="SolicitudReqModificaForm"
+			path="/solicitudReqModificaAction"
+                        scope="session"
+			type="bandesal.gob.sv.cif.anexos.action.SolicitudReqModificaAction">
+			<forward name="successModifica" path="/solicitudModificaReq.jsp"/>
+                </action>
+		<action input="/solicitudModificaReq.jsp"
+			name="SolicitudReqModificaAnexosForm"
+			path="/solicitudReqModificaAnexosAction"
+                        scope="session"
+			type="bandesal.gob.sv.cif.anexos.action.SolicitudReqModificaAnexosAction">
+			<forward name="successModifica" path="/solicitudModificaReq.jsp"/>
+                </action>
+
+	</action-mappings>
+
+    <message-resources parameter="ApplicationResource"/>
+    
+    <!--
+    <plug-in className="org.apache.struts.tiles.TilesPlugin">
+        <set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />
+    </plug-in> 
+    -->
+    
+</struts-config>
