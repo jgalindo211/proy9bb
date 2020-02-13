@@ -1,0 +1,106 @@
+create or replace PROCEDURE    ENVIAR_CORREO
+(  P_ENVIA     IN VARCHAR2,
+   P_RECIBE    IN VARCHAR2,
+   P_ASUNTO    IN VARCHAR2,
+   P_MENSAJE   IN VARCHAR2)
+IS
+  mailhost     VARCHAR2(30);--:= 'bmi02.bmi.gob.sv';
+  mail_conn    utl_smtp.connection; 
+  
+  crlf VARCHAR2( 2 ):= CHR( 13 ) || CHR( 10 );
+  mesg VARCHAR2( 1000 );
+  V_VALOR VARCHAR2(1);
+  V_HOST_ACTUAL VARCHAR2(255);
+  puerto  number(5);
+BEGIN
+ begin 
+  Select VALOR
+  into   mailhost
+  from   PARAM_GENERALES
+  where  ABREV_PARAMETRO = 'NOMBRE_SVR_COR'
+  and    cod_sistema = 'PA';
+ Exception
+    when no_data_found then
+    null;
+ End;
+ 
+  begin 
+  Select VALOR
+  into   puerto
+  from   PARAM_GENERALES
+  where  ABREV_PARAMETRO = 'PUERTO_SVR_COR'
+  and    cod_sistema = 'PA';
+ Exception
+    when no_data_found then
+    null;
+ End;
+ 
+  
+BEGIN 
+        SELECT SYS_CONTEXT('USERENV','SERVER_HOST') 
+        INTO V_HOST_ACTUAL
+        FROM dual;
+
+END; 
+
+ 
+begin 
+SELECT NVL(VALOR,'N')  
+INTO V_VALOR 
+FROM PARAM_GENERALES
+WHERE COD_SISTEMA = 'PA' AND ABREV_PARAMETRO = 'ENVIA_CORREOS_JOBS';
+EXCEPTION 
+    WHEN NO_DATA_FOUND THEN 
+        DBMS_OUTPUT.PUT_LINE('EL PARAMETRO NO ENVIA_CORREOS_JOBS NO ESTA ASIGNADO E LA TABLA PARAM_GENERALES');
+        V_VALOR := 'N';
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('ERROR EN EL SISTEMA ' || SQLERRM);
+        V_VALOR := 'N';
+end;
+ 
+    IF upper(V_HOST_ACTUAL) = 'BMIPRCON' THEN 
+        IF V_VALOR = 'S' THEN            
+          mail_conn := utl_smtp.open_connection(mailhost, puerto);--25);
+ 
+          mesg:= 'Date: ' || TO_CHAR( SYSDATE, 'dd/mm/yyyy hh:mi:ss' ) || crlf ||
+                 'From:  <'||P_ENVIA||'>' || crlf ||
+                 'Subject: '||P_ASUNTO || crlf ||
+                 'To: '||P_RECIBE || crlf ||
+                 '' || crlf || P_MENSAJE;
+          utl_smtp.helo(mail_conn, mailhost);
+          utl_smtp.mail(mail_conn, P_ENVIA);
+          utl_smtp.rcpt(mail_conn, P_RECIBE);
+          utl_smtp.data(mail_conn, mesg);
+          utl_smtp.quit(mail_conn);
+        END IF;
+    
+    ELSIF  upper(V_HOST_ACTUAL) = 'BMIPRU' THEN 
+        IF V_VALOR = 'S' THEN            
+          mail_conn := utl_smtp.open_connection(mailhost, puerto);--25);
+ 
+          mesg:= 'Date: ' || TO_CHAR( SYSDATE, 'dd/mm/yyyy hh:mi:ss' ) || crlf ||
+                 'From:  <'||P_ENVIA||'>' || crlf ||
+                 'Subject: '||P_ASUNTO || crlf ||
+                 'To: '||P_RECIBE || crlf ||
+                 '' || crlf || P_MENSAJE;
+          utl_smtp.helo(mail_conn, mailhost);
+          utl_smtp.mail(mail_conn, P_ENVIA);
+          utl_smtp.rcpt(mail_conn, P_RECIBE);
+          utl_smtp.data(mail_conn, mesg);
+          utl_smtp.quit(mail_conn);
+        END IF;
+    ELSE
+          mail_conn := utl_smtp.open_connection(mailhost, puerto);--25);
+          mesg:= 'Date: ' || TO_CHAR( SYSDATE, 'dd/mm/yyyy hh:mi:ss' ) || crlf ||
+                 'From:  <'||P_ENVIA||'>' || crlf ||
+                 'Subject: '||P_ASUNTO || crlf ||
+                 'To: '||P_RECIBE || crlf ||
+                 '' || crlf || P_MENSAJE;
+          utl_smtp.helo(mail_conn, mailhost);
+          utl_smtp.mail(mail_conn, P_ENVIA);
+          utl_smtp.rcpt(mail_conn, P_RECIBE);
+          utl_smtp.data(mail_conn, mesg);
+          utl_smtp.quit(mail_conn);   
+    END IF;      
+END; 
+ 
